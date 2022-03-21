@@ -1,131 +1,27 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:funduk_app/bussines_logic/cubits/cart_dart_cubit.dart';
 import 'package:funduk_app/bussines_logic/cubits/counter_dart_cubit.dart';
-import 'package:funduk_app/presentation/screens/details_screen.dart';
 
-import '../../data/models/cart.dart';
-import '../../data/models/meal.dart';
-
-class MealItem extends StatefulWidget {
+class MealItem extends StatelessWidget {
   Color color;
   String imageUrl;
   int countIng;
   double price;
   String title;
   String typeMeal;
-  List<String> ingriedents;
-  String subType;
-  String description;
-  String videoId;
 
-  MealItem({
-    Key? key,
-    required this.color,
-    required this.imageUrl,
-    required this.countIng,
-    required this.price,
-    required this.typeMeal,
-    required this.title,
-    required this.ingriedents,
-    required this.subType,
-    required this.description,
-    required this.videoId,
-  }) : super(key: key);
-
-  @override
-  State<MealItem> createState() => _MealItemState();
-}
-
-class _MealItemState extends State<MealItem> {
-  bool _visibleDialog = false;
-  var rnd = Random();
-  AnimationController? controller;
-  Animation<double>? scaleAnimation;
+  MealItem(
+      {Key? key,
+      required this.color,
+      required this.imageUrl,
+      required this.countIng,
+      required this.price,
+      required this.typeMeal,
+      required this.title})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    int counter = 0;
-    void _showMaterialDialogCheck() {
-      showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              alignment: Alignment.centerRight,
-              elevation: 0,
-              backgroundColor: Colors.grey.withOpacity(0),
-              actionsAlignment: MainAxisAlignment.center,
-              title: AnimatedOpacity(
-                curve: Curves.bounceInOut,
-                duration: const Duration(milliseconds: 1000),
-                opacity: _visibleDialog ? 1.0 : 0.0,
-                child: Container(
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(15)),
-                  padding: const EdgeInsets.all(20),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Stack(
-                        children: <Widget>[
-                          SvgPicture.asset(
-                            'assets/images/circle.svg',
-                            height: 120,
-                          ),
-                          Container(
-                            padding: const EdgeInsets.all(5),
-                            width: 135,
-                            height: 100,
-                            alignment: Alignment.topRight,
-                            child: SvgPicture.asset(
-                              'assets/images/check.svg',
-                              height: 90,
-                              width: 90,
-                            ),
-                          )
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 15,
-                      ),
-                      Text('${widget.title} добавлен!')
-                    ],
-                  ),
-                  width: MediaQuery.of(context).size.width * .4,
-                  height: MediaQuery.of(context).size.height * .4,
-                ),
-              ),
-              actions: <Widget>[
-                Container(
-                    width: 50,
-                    height: 50,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(100),
-                    ),
-                    child: TextButton(
-                      onPressed: () {
-                        setState(() {
-                          _visibleDialog = !_visibleDialog;
-                        });
-                        Navigator.of(context).pop();
-                      },
-                      child: SvgPicture.asset(
-                        'assets/images/cancel.svg',
-                        height: 16,
-                        color: Colors.indigo,
-                      ),
-                    ))
-              ],
-            );
-          });
-    }
-
     void _showMaterialDialog() {
       showDialog(
           context: context,
@@ -139,28 +35,28 @@ class _MealItemState extends State<MealItem> {
                 decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(15)),
-                padding: const EdgeInsets.all(20),
+                padding: EdgeInsets.all(20),
                 child: Column(
                   children: <Widget>[
                     Text(
-                      widget.title,
-                      style: const TextStyle(
+                      title,
+                      style: TextStyle(
                           color: Colors.black, fontWeight: FontWeight.w700),
                     ),
-                    const SizedBox(
+                    SizedBox(
                       height: 5,
                     ),
                     Text(
-                      '${widget.price.toStringAsFixed(0)} сум',
-                      style: const TextStyle(
+                      '${price.toStringAsFixed(0)} сум',
+                      style: TextStyle(
                           color: Colors.black, fontWeight: FontWeight.w400),
                     ),
-                    SizedBox(
+                    Container(
                       width: 200,
                       height: 100,
                       child: Image.asset(
-                        widget.imageUrl,
-                        fit: BoxFit.contain,
+                        imageUrl,
+                        fit: BoxFit.cover,
                       ),
                     ),
                     Container(
@@ -177,7 +73,7 @@ class _MealItemState extends State<MealItem> {
                                 BlocProvider.of<CounterDartCubit>(context)
                                     .increment();
                               },
-                              icon: const Icon(
+                              icon: Icon(
                                 Icons.add,
                                 color: Colors.white,
                                 size: 16,
@@ -186,7 +82,7 @@ class _MealItemState extends State<MealItem> {
                             builder: (context, state) {
                               return Text(
                                 state.counter.toString(),
-                                style: const TextStyle(
+                                style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold,
                                     fontSize: 18),
@@ -198,7 +94,7 @@ class _MealItemState extends State<MealItem> {
                                 BlocProvider.of<CounterDartCubit>(context)
                                     .decrement();
                               },
-                              icon: const Icon(
+                              icon: Icon(
                                 Icons.remove,
                                 color: Colors.white,
                                 size: 16,
@@ -206,58 +102,25 @@ class _MealItemState extends State<MealItem> {
                         ],
                       ),
                     ),
-                    const SizedBox(
+                    SizedBox(
                       height: 25,
                     ),
                     Container(
-                      decoration: BoxDecoration(
-                          color: Colors.indigo,
-                          borderRadius: BorderRadius.circular(15)),
+                      color: Colors.indigo,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          const Icon(
-                            Icons.shopping_cart,
-                            color: Colors.white,
-                            size: 16,
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              setState(() {
-                                _visibleDialog = !_visibleDialog;
-                              });
-                              BlocProvider.of<CartDartCubit>(context).addList(
-                                  Cart(
-                                      id: DateTime.now().toString(),
-                                      title: widget.title,
-                                      imageUrl: widget.imageUrl,
-                                      typeMeal: widget.typeMeal,
-                                      count: BlocProvider.of<CounterDartCubit>(
-                                              context)
-                                          .state
-                                          .counter
-                                          .toInt(),
-                                      price: widget.price,
-                                     videoId: widget.videoId,
-                                  ));
-                              BlocProvider.of<CounterDartCubit>(context)
-                                  .doNull();
-                              BlocProvider.of<CartDartCubit>(context)
-                                  .sumOfPrices();
-                              BlocProvider.of<CartDartCubit>(context)
-                                  .countItems();
-                              Navigator.of(context).pop();
-                              // BlocProvider.of<CounterDartCubit>(context).doNull();
-                              _showMaterialDialogCheck();
-                            },
-                            child: const Text(
-                              'Добавит в меню',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w700),
-                            ),
-                          )
-                        ],
+                       children: <Widget>[
+                         Icon(Icons.shopping_cart,color: Colors.white,size:16,),
+                         TextButton(
+                           onPressed: () {},
+                           child: Text(
+                             'Добавит в меню',
+                             style: TextStyle(
+                                 color: Colors.white, fontWeight: FontWeight.w700),
+                           ),
+                         )
+
+                       ],
                       ),
                     )
                   ],
@@ -265,20 +128,17 @@ class _MealItemState extends State<MealItem> {
               ),
               actions: <Widget>[
                 Container(
-                    width: 50,
-                    height: 50,
                     decoration: BoxDecoration(
-                      color: Colors.white,
                       borderRadius: BorderRadius.circular(100),
                     ),
                     child: TextButton(
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
-                      child: SvgPicture.asset(
-                        'assets/images/cancel.svg',
-                        height: 16,
-                        color: Colors.indigo,
+                      child: Icon(
+                        Icons.cancel_outlined,
+                        size: 45,
+                        color: Colors.red.withOpacity(.9),
                       ),
                     ))
               ],
@@ -292,7 +152,7 @@ class _MealItemState extends State<MealItem> {
       children: [
         Container(
           width: width * 0.4,
-          decoration: const BoxDecoration(boxShadow: [
+          decoration: BoxDecoration(boxShadow: [
             BoxShadow(
               blurRadius: 0,
               spreadRadius: 0,
@@ -303,42 +163,42 @@ class _MealItemState extends State<MealItem> {
         Align(
           alignment: Alignment.bottomCenter,
           child: Container(
-            margin: const EdgeInsets.all(5),
-            width: width * .4,
-            height: height * .30,
+            margin: EdgeInsets.all(5),
+            width: width * .45,
+            height: height * .3,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(15),
-                color: widget.color,
+                color: color,
                 boxShadow: [
                   BoxShadow(
                     blurRadius: 2,
                     color: Colors.grey.withOpacity(.25),
                     spreadRadius: 2,
-                    offset: const Offset(0, 3),
+                    offset: Offset(0, 3),
                   )
                 ]),
-            padding: const EdgeInsets.all(5),
+            padding: EdgeInsets.all(5),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                const SizedBox(
+                SizedBox(
                   height: 60,
                 ),
                 Text(
-                  '| ${widget.typeMeal}',
-                  style: const TextStyle(color: Colors.blue, fontSize: 14),
+                  '| ${typeMeal}',
+                  style: TextStyle(color: Colors.blue, fontSize: 14),
                 ),
-                const SizedBox(
+                SizedBox(
                   height: 10,
                 ),
                 Text(
-                  widget.title,
-                  style: const TextStyle(
+                  title,
+                  style: TextStyle(
                       fontSize: 25,
                       fontWeight: FontWeight.w700,
                       color: Colors.black),
                 ),
-                const SizedBox(
+                SizedBox(
                   height: 10,
                 ),
                 Row(
@@ -350,13 +210,13 @@ class _MealItemState extends State<MealItem> {
                           color: Colors.black.withOpacity(.8), fontSize: 12),
                     ),
                     Text(
-                      widget.price.toStringAsFixed(0),
+                      price.toStringAsFixed(0),
                       style: TextStyle(
                           color: Colors.black.withOpacity(.8), fontSize: 12),
                     )
                   ],
                 ),
-                const SizedBox(
+                SizedBox(
                   height: 10,
                 ),
                 Row(
@@ -368,13 +228,13 @@ class _MealItemState extends State<MealItem> {
                       size: 14,
                     ),
                     Text(
-                      '${widget.countIng.toString()} инг',
+                      '${countIng.toString()} инг',
                       style: TextStyle(
                           color: Colors.black.withOpacity(.8), fontSize: 14),
                     ),
                   ],
                 ),
-                const SizedBox(
+                SizedBox(
                   height: 10,
                 ),
                 Row(
@@ -383,7 +243,7 @@ class _MealItemState extends State<MealItem> {
                       child: Align(
                         alignment: Alignment.center,
                         child: IconButton(
-                          icon: const Icon(
+                          icon: Icon(
                             Icons.add_circle_outline_outlined,
                             color: Colors.blue,
                             size: 15,
@@ -395,32 +255,18 @@ class _MealItemState extends State<MealItem> {
                       ),
                       width: 28,
                       height: 38,
-                      padding: const EdgeInsets.only(right: 5),
+                      padding: EdgeInsets.only(right: 5),
                       decoration: BoxDecoration(
                         color: Colors.grey.shade300,
                         borderRadius: BorderRadius.circular(5),
                       ),
                     ),
-                    const SizedBox(
+                    SizedBox(
                       width: 10,
                     ),
                     ElevatedButton(
-                        onPressed: () {
-                          BlocProvider.of<CartDartCubit>(context).setMeal(Meal(
-
-                              imageUrl: widget.imageUrl,
-                              cost: widget.price,
-                              description: widget.description,
-                              ingriedent: widget.ingriedents,
-                              subType: widget.subType,
-                              typeMeal: widget.typeMeal,
-                              title: widget.title,
-                              videoId: widget.videoId,
-                          ));
-                          Navigator.of(context)
-                              .pushNamed(DetailsScreen.routeArgs);
-                        },
-                        child: const Text(
+                        onPressed: () {},
+                        child: Text(
                           'Подробнее',
                           style: TextStyle(color: Colors.white, fontSize: 10),
                         ))
@@ -431,15 +277,15 @@ class _MealItemState extends State<MealItem> {
           ),
         ),
         Positioned(
-          top: 0,
-          right: 0,
+          bottom: height * .2,
+          left: 20,
           child: Align(
             alignment: Alignment.topRight,
             child: SizedBox(
-              width: 100,
-              height: 100,
+              width: 150,
+              height: 150,
               child: Image.asset(
-                widget.imageUrl,
+                imageUrl,
                 fit: BoxFit.cover,
               ),
             ),
