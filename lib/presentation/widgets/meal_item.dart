@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:funduk_app/bussines_logic/cubits/counter_dart_cubit.dart';
 
 class MealItem extends StatelessWidget {
@@ -106,7 +107,7 @@ class MealItem extends StatelessWidget {
                       height: 25,
                     ),
                     Container(
-                      color: Colors.indigo,
+                      decoration: BoxDecoration(color: Colors.indigo,borderRadius: BorderRadius.circular(15)),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                        children: <Widget>[
@@ -128,18 +129,17 @@ class MealItem extends StatelessWidget {
               ),
               actions: <Widget>[
                 Container(
+                    width: 50,
+                    height:50 ,
                     decoration: BoxDecoration(
+                      color: Colors.white,
                       borderRadius: BorderRadius.circular(100),
                     ),
                     child: TextButton(
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
-                      child: Icon(
-                        Icons.cancel_outlined,
-                        size: 45,
-                        color: Colors.red.withOpacity(.9),
-                      ),
+                      child:SvgPicture.asset('assets/images/cancel.svg',height: 16,color: Colors.indigo,),
                     ))
               ],
             );
