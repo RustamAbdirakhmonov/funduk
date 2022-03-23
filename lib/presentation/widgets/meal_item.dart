@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:funduk_app/bussines_logic/cubits/cart_dart_cubit.dart';
 import 'package:funduk_app/bussines_logic/cubits/counter_dart_cubit.dart';
+import 'package:funduk_app/presentation/screens/details_screen.dart';
 
-class MealItem extends StatelessWidget {
+import '../../data/models/cart.dart';
+
+class MealItem extends StatefulWidget {
   Color color;
   String imageUrl;
   int countIng;
@@ -22,7 +26,94 @@ class MealItem extends StatelessWidget {
       : super(key: key);
 
   @override
+  State<MealItem> createState() => _MealItemState();
+}
+
+class _MealItemState extends State<MealItem> {
+  bool _visibleDialog = false;
+  AnimationController? controller;
+  Animation<double>? scaleAnimation;
+
+  @override
   Widget build(BuildContext context) {
+    int counter =0;
+    void _showMaterialDialogCheck() {
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              alignment: Alignment.centerRight,
+              elevation: 0,
+              backgroundColor: Colors.grey.withOpacity(0),
+              actionsAlignment: MainAxisAlignment.center,
+              title: AnimatedOpacity(
+                curve: Curves.bounceInOut,
+                duration: const Duration(milliseconds: 1000),
+                opacity: _visibleDialog ? 1.0 : 0.0,
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(15)),
+                  padding: const EdgeInsets.all(20),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Stack(
+                        children: <Widget>[
+                          SvgPicture.asset(
+                            'assets/images/circle.svg',
+                            height: 120,
+                          ),
+                          Container(
+                            padding: const EdgeInsets.all(5),
+                            width: 135,
+                            height: 100,
+                            alignment: Alignment.topRight,
+                            child: SvgPicture.asset(
+                              'assets/images/check.svg',
+                              height: 90,
+                              width: 90,
+                            ),
+                          )
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      Text('${widget.title} добавлен!')
+                    ],
+                  ),
+                  width: MediaQuery.of(context).size.width * .4,
+                  height: MediaQuery.of(context).size.height * .4,
+                ),
+              ),
+              actions: <Widget>[
+                Container(
+                    width: 50,
+                    height: 50,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(100),
+                    ),
+                    child: TextButton(
+                      onPressed: () {
+                        setState(() {
+                          _visibleDialog = !_visibleDialog;
+                        });
+                        Navigator.of(context).pop();
+                      },
+                      child: SvgPicture.asset(
+                        'assets/images/cancel.svg',
+                        height: 16,
+                        color: Colors.indigo,
+                      ),
+                    ))
+              ],
+            );
+          });
+    }
+
     void _showMaterialDialog() {
       showDialog(
           context: context,
@@ -36,27 +127,27 @@ class MealItem extends StatelessWidget {
                 decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(15)),
-                padding: EdgeInsets.all(20),
+                padding: const EdgeInsets.all(20),
                 child: Column(
                   children: <Widget>[
                     Text(
-                      title,
-                      style: TextStyle(
+                      widget.title,
+                      style: const TextStyle(
                           color: Colors.black, fontWeight: FontWeight.w700),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 5,
                     ),
                     Text(
-                      '${price.toStringAsFixed(0)} сум',
-                      style: TextStyle(
+                      '${widget.price.toStringAsFixed(0)} сум',
+                      style: const TextStyle(
                           color: Colors.black, fontWeight: FontWeight.w400),
                     ),
-                    Container(
+                    SizedBox(
                       width: 200,
                       height: 100,
                       child: Image.asset(
-                        imageUrl,
+                        widget.imageUrl,
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -74,7 +165,7 @@ class MealItem extends StatelessWidget {
                                 BlocProvider.of<CounterDartCubit>(context)
                                     .increment();
                               },
-                              icon: Icon(
+                              icon: const Icon(
                                 Icons.add,
                                 color: Colors.white,
                                 size: 16,
@@ -83,7 +174,7 @@ class MealItem extends StatelessWidget {
                             builder: (context, state) {
                               return Text(
                                 state.counter.toString(),
-                                style: TextStyle(
+                                style: const TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold,
                                     fontSize: 18),
@@ -95,7 +186,7 @@ class MealItem extends StatelessWidget {
                                 BlocProvider.of<CounterDartCubit>(context)
                                     .decrement();
                               },
-                              icon: Icon(
+                              icon: const Icon(
                                 Icons.remove,
                                 color: Colors.white,
                                 size: 16,
@@ -103,25 +194,50 @@ class MealItem extends StatelessWidget {
                         ],
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 25,
                     ),
                     Container(
-                      decoration: BoxDecoration(color: Colors.indigo,borderRadius: BorderRadius.circular(15)),
+                      decoration: BoxDecoration(
+                          color: Colors.indigo,
+                          borderRadius: BorderRadius.circular(15)),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                       children: <Widget>[
-                         Icon(Icons.shopping_cart,color: Colors.white,size:16,),
-                         TextButton(
-                           onPressed: () {},
-                           child: Text(
-                             'Добавит в меню',
-                             style: TextStyle(
-                                 color: Colors.white, fontWeight: FontWeight.w700),
-                           ),
-                         )
+                        children: <Widget>[
+                          const Icon(
+                            Icons.shopping_cart,
+                            color: Colors.white,
+                            size: 16,
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              setState(() {
+                                counter=BlocProvider.of<CounterDartCubit>(context).state.counter.toInt();
+                                _visibleDialog = !_visibleDialog;
+                              });
 
-                       ],
+                              BlocProvider.of<CartDartCubit>(context).addList(
+                                  Cart(
+                                      id: DateTime.now().toString(),
+                                      title: widget.title,
+                                      imageUrl: widget.imageUrl,
+                                      typeMeal: widget.typeMeal,
+                                      count: counter,
+                                      price: widget.price));
+                              BlocProvider.of<CounterDartCubit>(context).doNull();
+                              Navigator.of(context).pop();
+
+                              _showMaterialDialogCheck();
+                              // BlocProvider.of<CounterDartCubit>(context).doNull();
+                            },
+                            child: const Text(
+                              'Добавит в меню',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w700),
+                            ),
+                          )
+                        ],
                       ),
                     )
                   ],
@@ -130,7 +246,7 @@ class MealItem extends StatelessWidget {
               actions: <Widget>[
                 Container(
                     width: 50,
-                    height:50 ,
+                    height: 50,
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(100),
@@ -139,7 +255,11 @@ class MealItem extends StatelessWidget {
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
-                      child:SvgPicture.asset('assets/images/cancel.svg',height: 16,color: Colors.indigo,),
+                      child: SvgPicture.asset(
+                        'assets/images/cancel.svg',
+                        height: 16,
+                        color: Colors.indigo,
+                      ),
                     ))
               ],
             );
@@ -152,7 +272,8 @@ class MealItem extends StatelessWidget {
       children: [
         Container(
           width: width * 0.4,
-          decoration: BoxDecoration(boxShadow: [
+
+          decoration: const BoxDecoration(boxShadow: [
             BoxShadow(
               blurRadius: 0,
               spreadRadius: 0,
@@ -163,42 +284,42 @@ class MealItem extends StatelessWidget {
         Align(
           alignment: Alignment.bottomCenter,
           child: Container(
-            margin: EdgeInsets.all(5),
-            width: width * .45,
-            height: height * .3,
+            margin: const EdgeInsets.all(5),
+            width: width * .4,
+            height: height * .30,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(15),
-                color: color,
+                color: widget.color,
                 boxShadow: [
                   BoxShadow(
                     blurRadius: 2,
                     color: Colors.grey.withOpacity(.25),
                     spreadRadius: 2,
-                    offset: Offset(0, 3),
+                    offset: const Offset(0, 3),
                   )
                 ]),
-            padding: EdgeInsets.all(5),
+            padding: const EdgeInsets.all(5),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                SizedBox(
+                const SizedBox(
                   height: 60,
                 ),
                 Text(
-                  '| ${typeMeal}',
-                  style: TextStyle(color: Colors.blue, fontSize: 14),
+                  '| ${widget.typeMeal}',
+                  style: const TextStyle(color: Colors.blue, fontSize: 14),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 Text(
-                  title,
-                  style: TextStyle(
+                  widget.title,
+                  style: const TextStyle(
                       fontSize: 25,
                       fontWeight: FontWeight.w700,
                       color: Colors.black),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 Row(
@@ -210,13 +331,13 @@ class MealItem extends StatelessWidget {
                           color: Colors.black.withOpacity(.8), fontSize: 12),
                     ),
                     Text(
-                      price.toStringAsFixed(0),
+                      widget.price.toStringAsFixed(0),
                       style: TextStyle(
                           color: Colors.black.withOpacity(.8), fontSize: 12),
                     )
                   ],
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 Row(
@@ -228,13 +349,13 @@ class MealItem extends StatelessWidget {
                       size: 14,
                     ),
                     Text(
-                      '${countIng.toString()} инг',
+                      '${widget.countIng.toString()} инг',
                       style: TextStyle(
                           color: Colors.black.withOpacity(.8), fontSize: 14),
                     ),
                   ],
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 Row(
@@ -243,7 +364,7 @@ class MealItem extends StatelessWidget {
                       child: Align(
                         alignment: Alignment.center,
                         child: IconButton(
-                          icon: Icon(
+                          icon: const Icon(
                             Icons.add_circle_outline_outlined,
                             color: Colors.blue,
                             size: 15,
@@ -255,18 +376,20 @@ class MealItem extends StatelessWidget {
                       ),
                       width: 28,
                       height: 38,
-                      padding: EdgeInsets.only(right: 5),
+                      padding: const EdgeInsets.only(right: 5),
                       decoration: BoxDecoration(
                         color: Colors.grey.shade300,
                         borderRadius: BorderRadius.circular(5),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 10,
                     ),
                     ElevatedButton(
-                        onPressed: () {},
-                        child: Text(
+                        onPressed: () {
+                          Navigator.of(context).pushNamed(DetailsScreen.routeArgs);
+                        },
+                        child: const Text(
                           'Подробнее',
                           style: TextStyle(color: Colors.white, fontSize: 10),
                         ))
@@ -285,7 +408,7 @@ class MealItem extends StatelessWidget {
               width: 150,
               height: 150,
               child: Image.asset(
-                imageUrl,
+                widget.imageUrl,
                 fit: BoxFit.cover,
               ),
             ),

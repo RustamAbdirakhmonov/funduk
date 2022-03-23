@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'data/models/meal.dart';
 
 List<Meal> DUMMY_MEALS = [

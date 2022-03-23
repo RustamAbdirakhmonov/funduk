@@ -8,4 +8,8 @@ class CounterDartCubit extends Cubit<CounterState> {
   void increment() => emit(CounterState(counter: state.counter+1));
 
   void decrement() => emit(CounterState(counter: state.counter>0?state.counter-1:0));
+  void get counter=>state.counter;
+  void doNull()=>emit(CounterState(counter: 0));
+  void installCounter(int count)=>emit(CounterState(counter: count));
+
 }

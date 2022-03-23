@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:funduk_app/bussines_logic/cubits/counter_dart_cubit.dart';
+import 'package:funduk_app/presentation/screens/cart_screen.dart';
+import 'package:funduk_app/presentation/screens/details_screen.dart';
 import 'package:funduk_app/presentation/screens/my_home_page.dart';
+
+import 'bussines_logic/cubits/cart_dart_cubit.dart';
 
 void main() {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -16,8 +20,13 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => CounterDartCubit(),
+    return MultiBlocProvider(
+       providers: [
+        BlocProvider(create: (context) => CounterDartCubit(),),
+        BlocProvider(create: (context)=>CartDartCubit(),),
+       ],
+
+
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
@@ -25,6 +34,10 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
         ),
         home: MyHomePage(),
+        routes: {
+          CartScreen.routeArgs:(context)=>CartScreen(),
+          DetailsScreen.routeArgs:(context)=>DetailsScreen(),
+        },
       ),
     );
   }

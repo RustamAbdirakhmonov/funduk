@@ -6,6 +6,7 @@ import 'package:funduk_app/data/models/meal.dart';
 import 'package:funduk_app/presentation/widgets/main_drawer.dart';
 import 'package:funduk_app/presentation/widgets/meal_item.dart';
 class MyHomePage extends StatefulWidget {
+  static const routeArgs='/';
   const MyHomePage({
     Key? key,
   }) : super(key: key);
@@ -14,7 +15,7 @@ class MyHomePage extends StatefulWidget {
 }
 class _MyHomePageState extends State<MyHomePage> {
   void initalization() async {
-    await Future.delayed(Duration(seconds: 1));
+    await Future.delayed(const Duration(seconds: 1));
     FlutterNativeSplash.remove();
   }
   Color color = Colors.white;
@@ -40,7 +41,7 @@ class _MyHomePageState extends State<MyHomePage> {
         children: <Widget>[
           MainDrawer(color: Colors.indigo),
           Container(
-            width: width * .8,
+            width: width * .82,
             child: Column(
               children: <Widget>[
                 SizedBox(
