@@ -71,7 +71,12 @@ class _MyHomePageState extends State<MyHomePage> {
                           countIng: DUMMY_MEALS[index].ingriedent.length,
                           price: DUMMY_MEALS[index].cost,
                           typeMeal: DUMMY_MEALS[index].typeMeal,
-                          title: DUMMY_MEALS[index].title);
+                          title: DUMMY_MEALS[index].title,
+                          ingriedents: DUMMY_MEALS[index].ingriedent,
+                          subType: DUMMY_MEALS[index].subType,
+                          description: DUMMY_MEALS[index].description,
+
+                      );
                     },
                     itemCount: DUMMY_MEALS.length,
                   ),

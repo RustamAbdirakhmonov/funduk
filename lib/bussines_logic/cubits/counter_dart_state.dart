@@ -3,5 +3,6 @@ part of 'counter_dart_cubit.dart';
 
 class CounterState{
   int counter;
-  CounterState({required this.counter});
+  int navIndex;
+  CounterState({required this.counter,required this.navIndex});
 }

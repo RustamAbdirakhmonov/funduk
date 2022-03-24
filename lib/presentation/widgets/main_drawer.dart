@@ -1,4 +1,7 @@
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:funduk_app/bussines_logic/cubits/counter_dart_cubit.dart';
 import 'package:funduk_app/presentation/screens/cart_screen.dart';
 import 'package:funduk_app/presentation/screens/my_home_page.dart';
 
@@ -12,9 +15,9 @@ class MainDrawer extends StatefulWidget {
 }
 
 class _DrawerState extends State<MainDrawer> {
-  int _selectIndex = 0;
 
-  final Shader linearGradient = LinearGradient(
+
+  final Shader linearGradient = const LinearGradient(
     colors: <Color>[
       Colors.yellow,
       Colors.red,
@@ -22,80 +25,88 @@ class _DrawerState extends State<MainDrawer> {
       Colors.yellow,
       Colors.deepOrangeAccent
     ],
-  ).createShader(Rect.fromLTWH(0.0, 0.0, 200.0, 70.0));
+  ).createShader(const Rect.fromLTWH(0.0, 0.0, 200.0, 70.0));
 
-  List<Widget> _list=[
-    MyHomePage(),
-    CartScreen(),
-  ];
 
   @override
   Widget build(BuildContext context) {
 
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
-    return NavigationRail(
+    return BlocBuilder<CounterDartCubit,CounterState>(
+      builder: (context, state){
+      return NavigationRail(
+        minWidth: width * .18,
+        backgroundColor: widget.color,
+        selectedLabelTextStyle: const TextStyle(color: Colors.white, fontSize: 18),
+        unselectedLabelTextStyle:
+            TextStyle(color: Colors.white.withOpacity(.6), fontSize: 18),
+        labelType: NavigationRailLabelType.all,
+        selectedIconTheme: const IconThemeData(color: Colors.white,size: 30),
+        unselectedIconTheme: IconThemeData(color: Colors.white.withOpacity(.6),size: 30),
+        destinations: [
+          NavigationRailDestination(
+              icon: const SizedBox(),
+              label: RotatedBox(
+                quarterTurns: -1,
+                child:  Text(
+                    'FUNDUK',
+                    style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 30,
+                        foreground: Paint()..shader = linearGradient),
+                  ),
+                ),
+              ),
+          const NavigationRailDestination(
+              icon:Icon(Icons.shopping_cart,), label: Text('.'),),
+          const NavigationRailDestination(
+              icon: Icon(Icons.shopping_cart,),
+              label: RotatedBox(
+                quarterTurns: -1,
+                child: Text(
+                  'Европейская',
+                  // style: TextStyle(color: Colors.white),
+                ),
+              )),
+          const NavigationRailDestination(
+              icon: SizedBox(),
+              label: RotatedBox(
+                quarterTurns: -1,
+                child: Text('Японская'),
+              )),
+          const NavigationRailDestination(
+              icon: SizedBox(),
+              label: RotatedBox(
+                quarterTurns: -1,
+                child: Text('Напитки',style: TextStyle(),),
+              )),
+          const NavigationRailDestination(
+              icon: SizedBox(),
+              label: CircleAvatar(
+                child: Text('uz'),
+              )),
+          const NavigationRailDestination(
+              icon: SizedBox(),
+              label: CircleAvatar(
+                child: Text('ru'),
+              ))
+        ],
 
-      labelType: NavigationRailLabelType.all,
-      minWidth: width * .12,
-      backgroundColor: widget.color,
-      selectedLabelTextStyle: TextStyle(color: Colors.white, fontSize: 18),
-      unselectedLabelTextStyle: TextStyle(color: Colors.white.withOpacity(.6), fontSize: 18),
-      destinations: [
+        selectedIndex: state.navIndex,
+        onDestinationSelected: (int index) {
+         BlocProvider.of<CounterDartCubit>(context).setNavRailIndex(index);
 
-        NavigationRailDestination(
-            icon: SizedBox(),
-            label: RotatedBox(
-              quarterTurns: -1,
-              child: TextButton(onPressed: (){
-                Navigator.of(context).pushNamed(MyHomePage.routeArgs);
-              },child: Text(
-                'FUNDUK',
-                style: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 30,
-                    foreground: Paint()..shader = linearGradient),
-              ),),
-            )),
-        NavigationRailDestination(
+          switch(state.navIndex){
+            case 1:Navigator.of(context).pushNamed(CartScreen.routeArgs);
+             break;
+            case 0:Navigator.of(context).pushNamed(MyHomePage.routeArgs);
 
-            icon: IconButton(onPressed: () {
-              Navigator.of(context).pushNamed(CartScreen.routeArgs);
-            },icon: Icon(Icons.shopping_cart,color:Colors.white,size: 30,),), label: SizedBox()),
+          }
+        },
+      );
 
-        NavigationRailDestination(icon: SizedBox(), label: RotatedBox(
-          quarterTurns: -1,
-          child: Text('Европейская'),
-        )),
-        NavigationRailDestination(icon: SizedBox(), label: RotatedBox(
-          quarterTurns: -1,
-          child: Text('Японская'),
-        )),
-        NavigationRailDestination(
-
-            icon: SizedBox(), label: RotatedBox(
-          quarterTurns: -1,
-          child: Text('Напитки'),
-
-        )),
-        NavigationRailDestination(icon: SizedBox(), label:CircleAvatar(child: Text('uz'),)),
-        NavigationRailDestination(icon: SizedBox(), label:CircleAvatar(child: Text('ru'),))
-
-
-      ],
-
-
-      selectedIndex: _selectIndex,
-
-      onDestinationSelected: (int index) {
-        setState(() {
-          _selectIndex = index;
-        });
-        MaterialPageRoute(builder: (context) =>index==1?const CartScreen():const MyHomePage());
-        print(index);
-
-      },
-
+      }
 
     );
   }

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -6,6 +8,7 @@ import 'package:funduk_app/bussines_logic/cubits/counter_dart_cubit.dart';
 import 'package:funduk_app/presentation/screens/details_screen.dart';
 
 import '../../data/models/cart.dart';
+import '../../data/models/meal.dart';
 
 class MealItem extends StatefulWidget {
   Color color;
@@ -14,16 +17,22 @@ class MealItem extends StatefulWidget {
   double price;
   String title;
   String typeMeal;
+  List<String> ingriedents;
+  String subType;
+  String description;
 
-  MealItem(
-      {Key? key,
-      required this.color,
-      required this.imageUrl,
-      required this.countIng,
-      required this.price,
-      required this.typeMeal,
-      required this.title})
-      : super(key: key);
+  MealItem({
+    Key? key,
+    required this.color,
+    required this.imageUrl,
+    required this.countIng,
+    required this.price,
+    required this.typeMeal,
+    required this.title,
+    required this.ingriedents,
+    required this.subType,
+    required this.description,
+  }) : super(key: key);
 
   @override
   State<MealItem> createState() => _MealItemState();
@@ -31,12 +40,13 @@ class MealItem extends StatefulWidget {
 
 class _MealItemState extends State<MealItem> {
   bool _visibleDialog = false;
+  var rnd = Random();
   AnimationController? controller;
   Animation<double>? scaleAnimation;
 
   @override
   Widget build(BuildContext context) {
-    int counter =0;
+    int counter = 0;
     void _showMaterialDialogCheck() {
       showDialog(
           context: context,
@@ -148,7 +158,7 @@ class _MealItemState extends State<MealItem> {
                       height: 100,
                       child: Image.asset(
                         widget.imageUrl,
-                        fit: BoxFit.cover,
+                        fit: BoxFit.contain,
                       ),
                     ),
                     Container(
@@ -212,23 +222,29 @@ class _MealItemState extends State<MealItem> {
                           TextButton(
                             onPressed: () {
                               setState(() {
-                                counter=BlocProvider.of<CounterDartCubit>(context).state.counter.toInt();
                                 _visibleDialog = !_visibleDialog;
                               });
-
                               BlocProvider.of<CartDartCubit>(context).addList(
                                   Cart(
                                       id: DateTime.now().toString(),
                                       title: widget.title,
                                       imageUrl: widget.imageUrl,
                                       typeMeal: widget.typeMeal,
-                                      count: counter,
+                                      count: BlocProvider.of<CounterDartCubit>(
+                                              context)
+                                          .state
+                                          .counter
+                                          .toInt(),
                                       price: widget.price));
-                              BlocProvider.of<CounterDartCubit>(context).doNull();
+                              BlocProvider.of<CounterDartCubit>(context)
+                                  .doNull();
+                              BlocProvider.of<CartDartCubit>(context)
+                                  .sumOfPrices();
+                              BlocProvider.of<CartDartCubit>(context)
+                                  .countItems();
                               Navigator.of(context).pop();
-
-                              _showMaterialDialogCheck();
                               // BlocProvider.of<CounterDartCubit>(context).doNull();
+                              _showMaterialDialogCheck();
                             },
                             child: const Text(
                               'Добавит в меню',
@@ -272,7 +288,6 @@ class _MealItemState extends State<MealItem> {
       children: [
         Container(
           width: width * 0.4,
-
           decoration: const BoxDecoration(boxShadow: [
             BoxShadow(
               blurRadius: 0,
@@ -387,7 +402,16 @@ class _MealItemState extends State<MealItem> {
                     ),
                     ElevatedButton(
                         onPressed: () {
-                          Navigator.of(context).pushNamed(DetailsScreen.routeArgs);
+                          BlocProvider.of<CartDartCubit>(context).setMeal(Meal(
+                              imageUrl: widget.imageUrl,
+                              cost: widget.price,
+                              description: widget.description,
+                              ingriedent: widget.ingriedents,
+                              subType: widget.subType,
+                              typeMeal: widget.typeMeal,
+                              title: widget.title));
+                          Navigator.of(context)
+                              .pushNamed(DetailsScreen.routeArgs);
                         },
                         child: const Text(
                           'Подробнее',
@@ -400,13 +424,13 @@ class _MealItemState extends State<MealItem> {
           ),
         ),
         Positioned(
-          bottom: height * .2,
-          left: 20,
+          top: 0,
+          right: 0,
           child: Align(
             alignment: Alignment.topRight,
             child: SizedBox(
-              width: 150,
-              height: 150,
+              width: 100,
+              height: 100,
               child: Image.asset(
                 widget.imageUrl,
                 fit: BoxFit.cover,
