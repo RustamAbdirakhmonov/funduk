@@ -1,7 +1,10 @@
+import 'dart:developer';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:funduk_app/bussines_logic/cubits/counter_dart_cubit.dart';
+import 'package:funduk_app/bussines_logic/cubits/dummy_meals_cubit.dart';
 import 'package:funduk_app/presentation/screens/cart_screen.dart';
 import 'package:funduk_app/presentation/screens/my_home_page.dart';
 
@@ -125,8 +128,10 @@ class _DrawerState extends State<MainDrawer> {
           BlocProvider.of<CounterDartCubit>(context).setNavRailIndex(index);
 
           switch (state.navIndex) {
-            case 0:
-              Navigator.of(context).pushNamed(MyHomePage.routeArgs);
+            case 0:{
+              BlocProvider.of<DummyMealsCubit>(context).changeLanguage(context);
+
+              Navigator.of(context).pushNamed(MyHomePage.routeArgs);}
               break;
             case 1:
               {
@@ -145,6 +150,8 @@ class _DrawerState extends State<MainDrawer> {
               break;
             case 3:
               {
+                BlocProvider.of<DummyMealsCubit>(context).changeLanguage(context);
+                Navigator.of(context).pushNamed(MyHomePage.routeArgs);
                 setState(() {
                   _slectedIndex = 3;
                 });
@@ -160,6 +167,8 @@ class _DrawerState extends State<MainDrawer> {
               break;
             case 5:
               {
+                BlocProvider.of<DummyMealsCubit>(context).changeLanguage(context);
+                Navigator.of(context).pushNamed(MyHomePage.routeArgs);
                 setState(() {
                   _slectedIndex = 5;
                 });
@@ -171,6 +180,8 @@ class _DrawerState extends State<MainDrawer> {
                 BlocProvider.of<CounterDartCubit>(context)
                     .setNavRailIndex(_slectedIndex);
                 BlocProvider.of<CounterDartCubit>(context).setLang(1);
+                BlocProvider.of<DummyMealsCubit>(context).changeLanguage(context);
+
               }
               break;
             case 7:
@@ -179,6 +190,9 @@ class _DrawerState extends State<MainDrawer> {
                 BlocProvider.of<CounterDartCubit>(context)
                     .setNavRailIndex(_slectedIndex);
                 BlocProvider.of<CounterDartCubit>(context).setLang(2);
+                BlocProvider.of<DummyMealsCubit>(context).changeLanguage(context);
+
+
 
               }
               break;

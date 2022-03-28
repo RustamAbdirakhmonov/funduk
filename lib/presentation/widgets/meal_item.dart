@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -321,8 +322,8 @@ class _MealItemState extends State<MealItem> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                const SizedBox(
-                  height: 60,
+                 SizedBox(
+                  height: widget.countIng!=0?60:70,
                 ),
                 Text(
                   '| ${widget.typeMeal}',
@@ -345,7 +346,7 @@ class _MealItemState extends State<MealItem> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Text(
-                      'стоимость:',
+                      "cost".tr(),
                       style: TextStyle(
                           color: Colors.black.withOpacity(.8), fontSize: 12),
                     ),
@@ -359,7 +360,7 @@ class _MealItemState extends State<MealItem> {
                 const SizedBox(
                   height: 10,
                 ),
-                Row(
+            widget.countIng!=0?Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
                     Icon(
@@ -368,16 +369,17 @@ class _MealItemState extends State<MealItem> {
                       size: 14,
                     ),
                     Text(
-                      '${widget.countIng.toString()} инг',
+                      '${widget.countIng.toString()} ${"ing".tr()}',
                       style: TextStyle(
                           color: Colors.black.withOpacity(.8), fontSize: 14),
                     ),
                   ],
-                ),
+                ):Container(),
                 const SizedBox(
                   height: 10,
                 ),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
                     Container(
                       child: Align(
@@ -420,8 +422,8 @@ class _MealItemState extends State<MealItem> {
                           Navigator.of(context)
                               .pushNamed(DetailsScreen.routeArgs);
                         },
-                        child: const Text(
-                          'Подробнее',
+                        child:  Text(
+                          "more".tr(),
                           style: TextStyle(color: Colors.white, fontSize: 10),
                         ))
                   ],
@@ -436,11 +438,12 @@ class _MealItemState extends State<MealItem> {
           child: Align(
             alignment: Alignment.topRight,
             child: SizedBox(
-              width: 100,
-              height: 100,
+
+              width: widget.countIng!=0?100:90,
+              height: widget.countIng!=0?100:120,
               child: Image.asset(
                 widget.imageUrl,
-                fit: BoxFit.cover,
+                fit: BoxFit.contain,
               ),
             ),
           ),

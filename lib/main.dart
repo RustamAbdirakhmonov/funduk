@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:funduk_app/bussines_logic/cubits/counter_dart_cubit.dart';
+import 'package:funduk_app/bussines_logic/cubits/dummy_meals_cubit.dart';
 import 'package:funduk_app/data/models/meal.dart';
 import 'package:funduk_app/presentation/screens/cart_screen.dart';
 import 'package:funduk_app/presentation/screens/details_screen.dart';
@@ -39,6 +40,7 @@ class MyApp extends StatelessWidget {
        providers: [
         BlocProvider(create: (context) => CounterDartCubit(),),
         BlocProvider(create: (context)=>CartDartCubit(),),
+        BlocProvider(create: (context)=>DummyMealsCubit())
        ],
 
 
