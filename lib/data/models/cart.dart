@@ -5,6 +5,7 @@ class Cart {
   String typeMeal;
   int count;
   double price;
+  String videoId;
 
   Cart(
       {required this.id,
@@ -12,5 +13,8 @@ class Cart {
       required this.imageUrl,
       required this.typeMeal,
       required this.count,
-      required this.price});
+      required this.price,
+      required this.videoId,
+
+      });
 }

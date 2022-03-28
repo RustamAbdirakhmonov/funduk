@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:funduk_app/presentation/screens/youtube_screen.dart';
 
 class DetailItem extends StatelessWidget {
   String title;
@@ -70,7 +71,9 @@ class DetailItem extends StatelessWidget {
                               color: Colors.white,
                             ),
                             child: IconButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.of(context).pushNamed(YouTubeIframeItem.routeArgs);
+                              },
                               icon: Icon(
                                 Icons.play_arrow,
                                 color: Colors.indigo,
@@ -162,7 +165,7 @@ class DetailItem extends StatelessWidget {
                               '${description}',
                               style: TextStyle(
                                   color: Colors.black.withOpacity(.6)),
-                              textAlign: TextAlign.justify,
+                              textAlign: TextAlign.left,
                             )),
                         SizedBox(
                           height: 10,
@@ -179,7 +182,7 @@ class DetailItem extends StatelessWidget {
                         ),
                         SizedBox(
                           width: MediaQuery.of(context).size.width * .7,
-                          height: MediaQuery.of(context).size.height * .28,
+                          height: MediaQuery.of(context).size.height * .26,
                           child: GridView.builder(
                             scrollDirection: Axis.vertical,
                             gridDelegate:

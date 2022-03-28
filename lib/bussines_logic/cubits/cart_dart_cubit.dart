@@ -6,7 +6,7 @@ import 'package:funduk_app/data/models/meal.dart';
 part 'cart_dart_state.dart';
 
 class CartDartCubit extends Cubit<CartDartInitial> {
-  CartDartCubit() : super(CartDartInitial(list: [],sum:0,countMeals: 0,meal: Meal(title:'',typeMeal: '',subType: '',ingriedent: [],description: '',cost: 0,imageUrl: '')));
+  CartDartCubit() : super(CartDartInitial(list: [],sum:0,countMeals: 0,meal: Meal(title:'',typeMeal: '',subType: '',ingriedent: [],description: '',cost: 0,imageUrl: '',videoId: '')));
 
   void addList(Cart cart) {
     // state.list.where((element) => element.title!=cart.title)!=null?{}:  // Barcha element qo'shilgandan kiyn  yoqamiz
@@ -54,7 +54,10 @@ class CartDartCubit extends Cubit<CartDartInitial> {
     state.meal=meal;
     emit(CartDartInitial(list: state.list, sum: state.sum,countMeals: state.countMeals,meal: state.meal));
   }
+   Meal getMeal()=> state.meal;
 
-
+  Cart findByVideoId(String videoId){
+    return state.list[state.list.indexWhere((element) => element.videoId==videoId)];
+  }
 
 }

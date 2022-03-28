@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:funduk_app/bussines_logic/cubits/counter_dart_cubit.dart';
 import 'package:funduk_app/presentation/screens/my_home_page.dart';
 import 'package:funduk_app/presentation/widgets/cart_item.dart';
 import 'package:funduk_app/presentation/widgets/main_drawer.dart';
@@ -145,11 +146,13 @@ class _CartScreenState extends State<CartScreen> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             Text(
+
                               'Your cart is empty \n please choose meal\n from the menu',
                               style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 16,
                               ),
+                              textAlign: TextAlign.center,
                             ),
                             SizedBox(
                               height: 25,
@@ -158,6 +161,7 @@ class _CartScreenState extends State<CartScreen> {
                               onPressed: () {
                                 Navigator.of(context)
                                     .pushNamed(MyHomePage.routeArgs);
+                                BlocProvider.of<CounterDartCubit>(context).setNavRailIndex(0);
                               },
                               child: Text(
                                 'Меню',

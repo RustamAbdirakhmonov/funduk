@@ -20,6 +20,7 @@ class MealItem extends StatefulWidget {
   List<String> ingriedents;
   String subType;
   String description;
+  String videoId;
 
   MealItem({
     Key? key,
@@ -32,6 +33,7 @@ class MealItem extends StatefulWidget {
     required this.ingriedents,
     required this.subType,
     required this.description,
+    required this.videoId,
   }) : super(key: key);
 
   @override
@@ -235,7 +237,9 @@ class _MealItemState extends State<MealItem> {
                                           .state
                                           .counter
                                           .toInt(),
-                                      price: widget.price));
+                                      price: widget.price,
+                                     videoId: widget.videoId,
+                                  ));
                               BlocProvider.of<CounterDartCubit>(context)
                                   .doNull();
                               BlocProvider.of<CartDartCubit>(context)
@@ -403,13 +407,16 @@ class _MealItemState extends State<MealItem> {
                     ElevatedButton(
                         onPressed: () {
                           BlocProvider.of<CartDartCubit>(context).setMeal(Meal(
+
                               imageUrl: widget.imageUrl,
                               cost: widget.price,
                               description: widget.description,
                               ingriedent: widget.ingriedents,
                               subType: widget.subType,
                               typeMeal: widget.typeMeal,
-                              title: widget.title));
+                              title: widget.title,
+                              videoId: widget.videoId,
+                          ));
                           Navigator.of(context)
                               .pushNamed(DetailsScreen.routeArgs);
                         },

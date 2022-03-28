@@ -6,6 +6,7 @@ class Meal {
   String description;
   double cost;
   String imageUrl;
+  String videoId;
   Meal(
       {required this.title,
       required this.typeMeal,
@@ -14,5 +15,7 @@ class Meal {
       required this.description,
       required this.cost,
       required this.imageUrl,
+      required this.videoId,
+
       });
 }

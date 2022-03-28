@@ -1,8 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:funduk_app/DUMMY_MEALS.dart';
-import 'package:funduk_app/data/models/meal.dart';
+import 'package:funduk_app/bussines_logic/cubits/counter_dart_cubit.dart';
 import 'package:funduk_app/presentation/widgets/main_drawer.dart';
 import 'package:funduk_app/presentation/widgets/meal_item.dart';
 class MyHomePage extends StatefulWidget {
@@ -14,18 +15,13 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 class _MyHomePageState extends State<MyHomePage> {
-  void initalization() async {
-    await Future.delayed(const Duration(seconds: 1));
-    FlutterNativeSplash.remove();
-  }
+
   Color color = Colors.white;
-  @override
-  void initState() {
-    initalization();
-    super.initState();
-  }
+
   @override
   Widget build(BuildContext context) {
+    var bloc=BlocProvider.of<CounterDartCubit>(context);
+
     MealItem meal;
     var width = MediaQuery
         .of(context)
@@ -40,22 +36,28 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Row(
         children: <Widget>[
           MainDrawer(color: Colors.indigo),
-          Container(
+          BlocBuilder<CounterDartCubit, CounterState>(
+            builder: (context, state) {
+             return Container(
             width: width * .82,
             child: Column(
               children: <Widget>[
-                SizedBox(
-                  height: 30,
+                SizedBox(height: height*.03,),
+                Container(
+                  height: height*.06,
+                  child: RichText(
+                     textAlign: TextAlign.left,
+                      text: TextSpan(
+
+                          children: [
+                        TextSpan(
+                            text: (state.lang==1||state.lang==2)?"title".tr():"title".tr(),
+                            style: TextStyle(color: Colors.black, fontSize: 16)),
+                        TextSpan(
+                            text: (state.lang==1||state.lang==2)?"title1".tr():"title1".tr(),
+                            style: TextStyle(color: Colors.blue, fontSize: 16)),
+                      ])),
                 ),
-                RichText(
-                    text: TextSpan(children: [
-                      TextSpan(
-                          text: 'Мы очень рады что ',
-                          style: TextStyle(color: Colors.black, fontSize: 16)),
-                      TextSpan(
-                          text: 'вы выбрали Наше \n ресторан, спасибо за визит!',
-                          style: TextStyle(color: Colors.blue, fontSize: 16)),
-                    ])),
                 Container(
                   height: height * 0.91,
                   width: width * 1,
@@ -75,6 +77,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           ingriedents: DUMMY_MEALS[index].ingriedent,
                           subType: DUMMY_MEALS[index].subType,
                           description: DUMMY_MEALS[index].description,
+                          videoId: DUMMY_MEALS[index].videoId,
 
                       );
                     },
@@ -83,7 +86,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 )
               ],
             ),
-          )
+          );
+  },
+)
         ],
       ),
     );
