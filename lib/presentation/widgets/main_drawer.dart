@@ -125,79 +125,62 @@ class _DrawerState extends State<MainDrawer> {
         ],
         selectedIndex: state.navIndex,
         onDestinationSelected: (int index) {
-          BlocProvider.of<CounterDartCubit>(context).setNavRailIndex(index);
 
-          switch (state.navIndex) {
+          switch (index) {
             case 0:{
               BlocProvider.of<DummyMealsCubit>(context).changeLanguage(context);
-
               Navigator.of(context).pushNamed(MyHomePage.routeArgs);}
               break;
             case 1:
               {
+                BlocProvider.of<DummyMealsCubit>(context).changeLanguage(context);
                 Navigator.of(context).pushNamed(CartScreen.routeArgs);
-                setState(() {
-                  _slectedIndex = 1;
-                });
+
               }
               break;
             case 2:
               {
-                setState(() {
-                  _slectedIndex = 2;
-                });
+
               }
               break;
             case 3:
               {
                 BlocProvider.of<DummyMealsCubit>(context).changeLanguage(context);
                 Navigator.of(context).pushNamed(MyHomePage.routeArgs);
-                setState(() {
-                  _slectedIndex = 3;
-                });
+
               }
               ;
               break;
             case 4:
               {
-                setState(() {
-                  _slectedIndex = 4;
-                });
+
               }
               break;
             case 5:
               {
                 BlocProvider.of<DummyMealsCubit>(context).changeLanguage(context);
                 Navigator.of(context).pushNamed(MyHomePage.routeArgs);
-                setState(() {
-                  _slectedIndex = 5;
-                });
+
               }
               break;
             case 6:
               {
                 context.setLocale(Locale('uz', 'UZ'));
-                BlocProvider.of<CounterDartCubit>(context)
-                    .setNavRailIndex(_slectedIndex);
                 BlocProvider.of<CounterDartCubit>(context).setLang(1);
                 BlocProvider.of<DummyMealsCubit>(context).changeLanguage(context);
-
               }
               break;
             case 7:
               {
                 context.setLocale(Locale('ru', 'RU'));
-                BlocProvider.of<CounterDartCubit>(context)
-                    .setNavRailIndex(_slectedIndex);
                 BlocProvider.of<CounterDartCubit>(context).setLang(2);
                 BlocProvider.of<DummyMealsCubit>(context).changeLanguage(context);
-
-
-
               }
               break;
             //
           }
+          if(index!=6&&index!=7) BlocProvider.of<CounterDartCubit>(context).setNavRailIndex(index);
+
         },
       );
     });

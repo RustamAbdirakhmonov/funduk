@@ -10,28 +10,39 @@ import '../../data/models/meal.dart';
 part 'dummy_meals_state.dart';
 
 class DummyMealsCubit extends Cubit<DummyMealsInitial> {
-  DummyMealsCubit() : super(DummyMealsInitial(meal_uz: DUMMY_MEALS_UZ));
+  DummyMealsCubit() : super(DummyMealsInitial(meal_uz: DUMMY_MEALS_UZ,meal: Meal(ingriedent: [], imageUrl: '', description: '', cost: 0, id: 0, typeMeal: '', videoId: '', title: '', subType: '')));
 
   void changeLanguage(BuildContext context){
     var lang=BlocProvider.of<CounterDartCubit>(context);
     print(lang.getLang());
     print(lang.getNavRailIndex());
-    if(lang.getLang()==1){
+    if(lang.state.lang==1){
 
       switch(lang.getNavRailIndex()){
         case 0: state.meal_uz=DUMMY_MEALS_UZ;
          break;
         case 5: state.meal_uz=DUMMY_DRINK_UZ;
+        break;
       }
 
-    } else if(lang.getLang()==2) {
+    } else if(lang.state.lang==2) {
       switch(lang.getNavRailIndex()){
         case 0: state.meal_uz=DUMMY_MEALS;
         break;
         case 5: state.meal_uz=DUMMY_DRINK;
+        break;
+
       }
     }
-    emit(DummyMealsInitial(meal_uz: state.meal_uz));
+    emit(DummyMealsInitial(meal_uz: state.meal_uz,meal: state.meal));
   }
+
+  void findById(int id){
+    state.meal=state.meal_uz[state.meal_uz.indexWhere((element) => element.id==id)];
+    emit(DummyMealsInitial(meal_uz: state.meal_uz,meal: state.meal));
+
+  }
+
+
 
 }

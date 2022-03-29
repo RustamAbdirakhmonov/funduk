@@ -1,4 +1,5 @@
 class Meal {
+  int id;
   String title;
   String typeMeal;
   String subType;
@@ -8,7 +9,9 @@ class Meal {
   String imageUrl;
   String videoId;
   Meal(
-      {required this.title,
+      {
+        required this.id,
+        required this.title,
       required this.typeMeal,
       required this.subType,
       required this.ingriedent,

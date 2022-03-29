@@ -1,30 +1,22 @@
 import 'dart:math';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:funduk_app/bussines_logic/cubits/dummy_meals_cubit.dart';
 import 'package:funduk_app/presentation/screens/youtube_screen.dart';
 
 class DetailItem extends StatelessWidget {
-  String title;
-  String typeMeal;
-  String subType;
-  List<String> ingriedent;
-  String description;
-  double cost;
-  String imageUrl;
 
-  DetailItem({
-    required this.title,
-    required this.typeMeal,
-    required this.subType,
-    required this.ingriedent,
-    required this.description,
-    required this.cost,
-    required this.imageUrl,
-  });
 
   @override
   Widget build(BuildContext context) {
+    return BlocBuilder<DummyMealsCubit, DummyMealsInitial>(
+
+
+  builder: (context, state) {
+    BlocProvider.of<DummyMealsCubit>(context).changeLanguage(context);
     return Container(
       width: MediaQuery.of(context).size.width * .82,
       child: Column(
@@ -104,14 +96,14 @@ class DetailItem extends StatelessWidget {
                           height: 30,
                         ),
                         Text(
-                          '| ${typeMeal}',
+                          '| ${state.meal.typeMeal}',
                           style: TextStyle(color: Colors.blue),
                         ),
                         SizedBox(
                           height: 10,
                         ),
                         Text(
-                          title,
+                          state.meal.title,
                           style: TextStyle(
                               color: Colors.black,
                               fontWeight: FontWeight.w700,
@@ -130,7 +122,7 @@ class DetailItem extends StatelessWidget {
                                   width: 5,
                                 ),
                                 Text(
-                                  '${ingriedent.length} инг',
+                                  '${state.meal.ingriedent.length} ${"ing".tr()}',
                                   style: TextStyle(
                                       color: Colors.black,
                                       fontWeight: FontWeight.w300),
@@ -162,7 +154,7 @@ class DetailItem extends StatelessWidget {
                         SizedBox(
                             width: MediaQuery.of(context).size.width * .7,
                             child: Text(
-                              '${description}',
+                              '${state.meal.description}',
                               style: TextStyle(
                                   color: Colors.black.withOpacity(.6)),
                               textAlign: TextAlign.left,
@@ -171,7 +163,7 @@ class DetailItem extends StatelessWidget {
                           height: 10,
                         ),
                         Text(
-                          'Ингридиенты (${ingriedent.length})',
+                          '${"ingriedent".tr()} (${state.meal.ingriedent.length})',
                           style: TextStyle(
                               color: Colors.black,
                               fontWeight: FontWeight.w600,
@@ -210,7 +202,7 @@ class DetailItem extends StatelessWidget {
                                   ),
                                   SizedBox(
                                     child: Text(
-                                      ingriedent[index],
+                                      state.meal.ingriedent[index],
                                       textAlign: TextAlign.center,
                                     ),
                                     width: 60,
@@ -218,7 +210,7 @@ class DetailItem extends StatelessWidget {
                                 ],
                               );
                             },
-                            itemCount: ingriedent.length,
+                            itemCount: state.meal.ingriedent.length,
                           ),
                         )
                       ],
@@ -234,7 +226,7 @@ class DetailItem extends StatelessWidget {
                     height: MediaQuery.of(context).size.width * .6,
                     alignment: Alignment.topLeft,
                     child: Image.asset(
-                      imageUrl,
+                      state.meal.imageUrl,
                       fit: BoxFit.contain,
                     )),
               )
@@ -243,5 +235,7 @@ class DetailItem extends StatelessWidget {
         ],
       ),
     );
+  },
+);
   }
 }

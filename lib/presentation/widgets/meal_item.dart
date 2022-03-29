@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:funduk_app/bussines_logic/cubits/cart_dart_cubit.dart';
 import 'package:funduk_app/bussines_logic/cubits/counter_dart_cubit.dart';
+import 'package:funduk_app/bussines_logic/cubits/dummy_meals_cubit.dart';
 import 'package:funduk_app/presentation/screens/details_screen.dart';
 
 import '../../data/models/cart.dart';
@@ -22,9 +23,10 @@ class MealItem extends StatefulWidget {
   String subType;
   String description;
   String videoId;
-
+  int id;
   MealItem({
     Key? key,
+    required this.id,
     required this.color,
     required this.imageUrl,
     required this.countIng,
@@ -65,6 +67,7 @@ class _MealItemState extends State<MealItem> {
                 opacity: _visibleDialog ? 1.0 : 0.0,
                 child: Container(
                   decoration: BoxDecoration(
+
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(15)),
                   padding: const EdgeInsets.all(20),
@@ -94,7 +97,7 @@ class _MealItemState extends State<MealItem> {
                       const SizedBox(
                         height: 15,
                       ),
-                      Text('${widget.title} добавлен!')
+                      Text('${widget.title} ${"add".tr()}')
                     ],
                   ),
                   width: MediaQuery.of(context).size.width * .4,
@@ -408,17 +411,7 @@ class _MealItemState extends State<MealItem> {
                     ),
                     ElevatedButton(
                         onPressed: () {
-                          BlocProvider.of<CartDartCubit>(context).setMeal(Meal(
-
-                              imageUrl: widget.imageUrl,
-                              cost: widget.price,
-                              description: widget.description,
-                              ingriedent: widget.ingriedents,
-                              subType: widget.subType,
-                              typeMeal: widget.typeMeal,
-                              title: widget.title,
-                              videoId: widget.videoId,
-                          ));
+                          BlocProvider.of<DummyMealsCubit>(context).findById(widget.id);
                           Navigator.of(context)
                               .pushNamed(DetailsScreen.routeArgs);
                         },
@@ -438,7 +431,6 @@ class _MealItemState extends State<MealItem> {
           child: Align(
             alignment: Alignment.topRight,
             child: SizedBox(
-
               width: widget.countIng!=0?100:90,
               height: widget.countIng!=0?100:120,
               child: Image.asset(
