@@ -42,7 +42,7 @@ List<Meal> DUMMY_MEALS = [
       id:3,
       title: 'Гавайи',
       subType: 'Салаты',
-      typeMeal: 'Европейская',
+      typeMeal: 'Салаты',
       ingriedent: [
         'Куриная грудка',
         'черри',
@@ -60,7 +60,7 @@ List<Meal> DUMMY_MEALS = [
       id: 4,
       title: 'Гавайи',
       subType: 'Салаты',
-      typeMeal: 'Европейская',
+      typeMeal: 'Японская',
       ingriedent: [
         'Куриная грудка',
         'черри',
@@ -78,7 +78,7 @@ List<Meal> DUMMY_MEALS = [
       id: 5,
       title: 'Гавайи',
       subType: 'Салаты',
-      typeMeal: 'Европейская',
+      typeMeal: 'Салаты',
       ingriedent: [
         'Куриная грудка',
         'черри',
@@ -96,7 +96,7 @@ List<Meal> DUMMY_MEALS = [
       id: 6,
       title: 'Гавайи',
       subType: 'Салаты',
-      typeMeal: 'Европейская',
+      typeMeal: 'Японская',
       ingriedent: [
         'Куриная грудка',
         'черри',
@@ -153,7 +153,7 @@ List<Meal> DUMMY_MEALS_UZ = [
       id: 3,
       title: 'Gavayi',
       subType: 'Salatlar',
-      typeMeal: 'Yevropacha',
+      typeMeal: 'Salat',
       ingriedent: [
         'Tovuq felesi',
         'cherry',
@@ -170,8 +170,8 @@ List<Meal> DUMMY_MEALS_UZ = [
   Meal(
       id: 4,
       title: 'Gavayi',
-      subType: 'Salatlar',
-      typeMeal: 'Yevropacha',
+      subType: 'Yaponcha',
+      typeMeal: 'Yaponcha',
       ingriedent: [
         'Tovuq felesi',
         'cherry',
@@ -189,7 +189,7 @@ List<Meal> DUMMY_MEALS_UZ = [
       id: 5,
       title: 'Gavayi',
       subType: 'Salatlar',
-      typeMeal: 'Yevropacha',
+      typeMeal: 'Salat',
       ingriedent: [
         'Tovuq felesi',
         'cherry',
@@ -207,7 +207,7 @@ List<Meal> DUMMY_MEALS_UZ = [
      id: 6,
       title: 'Gavayi',
       subType: 'Salatlar',
-      typeMeal: 'Yevropacha',
+      typeMeal: 'Yaponcha',
       ingriedent: [
         'Tovuq felesi',
         'cherry',

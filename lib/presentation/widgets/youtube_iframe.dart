@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:funduk_app/bussines_logic/cubits/dummy_meals_cubit.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 import '../../bussines_logic/cubits/cart_dart_cubit.dart';
-import '../../data/models/cart.dart';
 import '../../data/models/meal.dart';
 class YouTubeItem extends StatefulWidget {
 
@@ -28,7 +28,7 @@ class _YouTubeItemState extends State<YouTubeItem> {
     Widget build(BuildContext context) {
     const player = YoutubePlayerIFrame();
 
-    Meal meal = BlocProvider.of<CartDartCubit>(context).getMeal();
+    Meal meal = BlocProvider.of<DummyMealsCubit>(context).refreshItem();
     @override
     void initState() {
       super.initState();

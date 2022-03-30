@@ -61,8 +61,7 @@ class MyApp extends StatelessWidget {
           CartScreen.routeArgs:(context)=>CartScreen(),
           DetailsScreen.routeArgs:(context)=>DetailsScreen(),
           YouTubeIframeItem.routeArgs:(context){
-            Meal meal=BlocProvider.of<CartDartCubit>(context).getMeal();
-            return YouTubeIframeItem(video_id: meal.videoId,);
+            return YouTubeIframeItem();
           },
         },
       ),

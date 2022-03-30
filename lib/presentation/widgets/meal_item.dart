@@ -10,7 +10,6 @@ import 'package:funduk_app/bussines_logic/cubits/dummy_meals_cubit.dart';
 import 'package:funduk_app/presentation/screens/details_screen.dart';
 
 import '../../data/models/cart.dart';
-import '../../data/models/meal.dart';
 
 class MealItem extends StatefulWidget {
   Color color;
@@ -24,6 +23,7 @@ class MealItem extends StatefulWidget {
   String description;
   String videoId;
   int id;
+
   MealItem({
     Key? key,
     required this.id,
@@ -67,7 +67,6 @@ class _MealItemState extends State<MealItem> {
                 opacity: _visibleDialog ? 1.0 : 0.0,
                 child: Container(
                   decoration: BoxDecoration(
-
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(15)),
                   padding: const EdgeInsets.all(20),
@@ -97,7 +96,7 @@ class _MealItemState extends State<MealItem> {
                       const SizedBox(
                         height: 15,
                       ),
-                      Text('${widget.title} ${"add".tr()}')
+                      Text('${widget.title} ${"add".tr()}',textAlign: TextAlign.center,)
                     ],
                   ),
                   width: MediaQuery.of(context).size.width * .4,
@@ -155,7 +154,7 @@ class _MealItemState extends State<MealItem> {
                       height: 5,
                     ),
                     Text(
-                      '${widget.price.toStringAsFixed(0)} сум',
+                      '${widget.price.toStringAsFixed(0)} ${"money".tr()}',
                       style: const TextStyle(
                           color: Colors.black, fontWeight: FontWeight.w400),
                     ),
@@ -230,20 +229,22 @@ class _MealItemState extends State<MealItem> {
                               setState(() {
                                 _visibleDialog = !_visibleDialog;
                               });
-                              BlocProvider.of<CartDartCubit>(context).addList(
-                                  Cart(
-                                      id: DateTime.now().toString(),
-                                      title: widget.title,
-                                      imageUrl: widget.imageUrl,
-                                      typeMeal: widget.typeMeal,
-                                      count: BlocProvider.of<CounterDartCubit>(
-                                              context)
-                                          .state
-                                          .counter
-                                          .toInt(),
-                                      price: widget.price,
-                                     videoId: widget.videoId,
-                                  ));
+                              BlocProvider.of<CounterDartCubit>(context)
+                                  .state
+                                  .counter!=0?BlocProvider.of<CartDartCubit>(context)
+                                  .addList(Cart(
+                                id: DateTime.now().toString(),
+                                title: widget.title,
+                                imageUrl: widget.imageUrl,
+                                typeMeal: widget.typeMeal,
+                                count:
+                                    BlocProvider.of<CounterDartCubit>(context)
+                                        .state
+                                        .counter
+                                        .toInt(),
+                                price: widget.price,
+                                videoId: widget.videoId,
+                              )):Container();
                               BlocProvider.of<CounterDartCubit>(context)
                                   .doNull();
                               BlocProvider.of<CartDartCubit>(context)
@@ -252,10 +253,12 @@ class _MealItemState extends State<MealItem> {
                                   .countItems();
                               Navigator.of(context).pop();
                               // BlocProvider.of<CounterDartCubit>(context).doNull();
-                              _showMaterialDialogCheck();
+                              BlocProvider.of<CounterDartCubit>(context)
+                                  .state
+                                  .counter.toInt()!=0?_showMaterialDialogCheck():Container();
                             },
-                            child: const Text(
-                              'Добавит в меню',
+                            child: Text(
+                              "add_to_cart".tr(),
                               style: TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.w700),
@@ -292,6 +295,7 @@ class _MealItemState extends State<MealItem> {
 
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
+
     return Stack(
       children: [
         Container(
@@ -325,8 +329,8 @@ class _MealItemState extends State<MealItem> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                 SizedBox(
-                  height: widget.countIng!=0?60:70,
+                SizedBox(
+                  height: widget.countIng != 0 ? 60 : 70,
                 ),
                 Text(
                   '| ${widget.typeMeal}',
@@ -363,26 +367,31 @@ class _MealItemState extends State<MealItem> {
                 const SizedBox(
                   height: 10,
                 ),
-            widget.countIng!=0?Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: <Widget>[
-                    Icon(
-                      Icons.food_bank_outlined,
-                      color: Colors.black.withOpacity(.8),
-                      size: 14,
-                    ),
-                    Text(
-                      '${widget.countIng.toString()} ${"ing".tr()}',
-                      style: TextStyle(
-                          color: Colors.black.withOpacity(.8), fontSize: 14),
-                    ),
-                  ],
-                ):Container(),
+                widget.countIng != 0
+                    ? Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: <Widget>[
+                          Icon(
+                            Icons.food_bank_outlined,
+                            color: Colors.black.withOpacity(.8),
+                            size: 14,
+                          ),
+                          Text(
+                            '${widget.countIng.toString()} ${"ing".tr()}',
+                            style: TextStyle(
+                                color: Colors.black.withOpacity(.8),
+                                fontSize: 14),
+                          ),
+                        ],
+                      )
+                    : Container(),
                 const SizedBox(
                   height: 10,
                 ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  mainAxisAlignment: widget.ingriedents.length > 0
+                      ? MainAxisAlignment.spaceEvenly
+                      : MainAxisAlignment.center,
                   children: <Widget>[
                     Container(
                       child: Align(
@@ -391,34 +400,41 @@ class _MealItemState extends State<MealItem> {
                           icon: const Icon(
                             Icons.add_circle_outline_outlined,
                             color: Colors.blue,
-                            size: 15,
+                            size: 18,
                           ),
                           onPressed: () {
                             _showMaterialDialog();
                           },
                         ),
                       ),
-                      width: 28,
-                      height: 38,
-                      padding: const EdgeInsets.only(right: 5),
+                      width: widget.ingriedents.length > 0 ? 38 : 55,
+                      height: widget.ingriedents.length > 0 ? 38 : 55,
                       decoration: BoxDecoration(
                         color: Colors.grey.shade300,
-                        borderRadius: BorderRadius.circular(5),
+                        borderRadius: widget.ingriedents.length > 0
+                            ? BorderRadius.circular(5)
+                            : BorderRadius.circular(20),
                       ),
                     ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    ElevatedButton(
-                        onPressed: () {
-                          BlocProvider.of<DummyMealsCubit>(context).findById(widget.id);
-                          Navigator.of(context)
-                              .pushNamed(DetailsScreen.routeArgs);
-                        },
-                        child:  Text(
-                          "more".tr(),
-                          style: TextStyle(color: Colors.white, fontSize: 10),
-                        ))
+                    widget.ingriedents.length > 0
+                        ? SizedBox(
+                            width: 10,
+                          )
+                        : SizedBox(),
+                    widget.ingriedents.length > 0
+                        ? ElevatedButton(
+                            onPressed: () {
+                              BlocProvider.of<DummyMealsCubit>(context)
+                                  .findById(widget.id);
+                              Navigator.of(context)
+                                  .pushNamed(DetailsScreen.routeArgs);
+                            },
+                            child: Text(
+                              "more".tr(),
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 10),
+                            ))
+                        : SizedBox()
                   ],
                 )
               ],
@@ -431,8 +447,8 @@ class _MealItemState extends State<MealItem> {
           child: Align(
             alignment: Alignment.topRight,
             child: SizedBox(
-              width: widget.countIng!=0?100:90,
-              height: widget.countIng!=0?100:120,
+              width: widget.countIng != 0 ? 100 : 90,
+              height: widget.countIng != 0 ? 100 : 120,
               child: Image.asset(
                 widget.imageUrl,
                 fit: BoxFit.contain,

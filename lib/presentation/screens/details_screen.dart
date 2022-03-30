@@ -6,11 +6,13 @@ import 'package:funduk_app/presentation/widgets/detail_item.dart';
 import 'package:funduk_app/presentation/widgets/main_drawer.dart';
 
 class DetailsScreen extends StatelessWidget {
+
   const DetailsScreen({Key? key}) : super(key: key);
   static const routeArgs = 'details_screen';
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
         body: Container(
       width: MediaQuery.of(context).size.width,
@@ -23,9 +25,7 @@ class DetailsScreen extends StatelessWidget {
         MainDrawer(color: Colors.indigo),
         BlocBuilder<DummyMealsCubit,DummyMealsInitial>(
           builder: (context, state) {
-            return DetailItem(
-
-            );
+            return DetailItem();
           },
         ),
       ]),

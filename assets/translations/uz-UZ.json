@@ -9,8 +9,17 @@
   "more": "ko'proq",
   "cost": "narxi",
   "add": "Qo'shildi",
-  "ingriedent": "Ingriedent"
-
+  "ingriedent": "Ingriedent",
+   "kal": "kal",
+  "cart": "Sizni savatchangiz",
+  "remove_cart": "Tozalang",
+  "cash": "Hisob",
+  "quantity": "Soni",
+  "delete": "O'chirish",
+  "menu": "Menu",
+  "notify": "Sizning savatchangiz bo'sh menu dan kirib tanlashingiz mumkun!",
+  "add_to_cart": "Savatga qo'shish",
+  "money": "So'm"
 
 
 }

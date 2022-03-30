@@ -1,8 +1,8 @@
-import 'dart:developer';
-
+import 'package:badges/badges.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:funduk_app/bussines_logic/cubits/cart_dart_cubit.dart';
 import 'package:funduk_app/bussines_logic/cubits/counter_dart_cubit.dart';
 import 'package:funduk_app/bussines_logic/cubits/dummy_meals_cubit.dart';
 import 'package:funduk_app/presentation/screens/cart_screen.dart';
@@ -65,11 +65,27 @@ class _DrawerState extends State<MainDrawer> {
               ),
             ),
           ),
-          const NavigationRailDestination(
-            icon: Icon(
-              Icons.shopping_cart,
-              color: Colors.white,
-              size: 25,
+          NavigationRailDestination(
+            icon: BlocBuilder<CartDartCubit, CartDartInitial>(
+              builder: (context, state) {
+                return Badge(
+                  badgeColor: Colors.red,
+                  position: BadgePosition.topEnd(),
+                  animationType: BadgeAnimationType.scale,
+                  badgeContent: Text(
+                    "${state.list.length}",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 10),
+                  ),
+                  child: Icon(
+                    Icons.shopping_cart,
+                    color: Colors.white,
+                    size: 25,
+                  ),
+                );
+              },
             ),
             label: SizedBox(),
           ),
@@ -111,76 +127,89 @@ class _DrawerState extends State<MainDrawer> {
               label: CircleAvatar(
                 foregroundColor: Colors.pink,
                 maxRadius: 15,
-                backgroundImage: AssetImage('assets/images/uzbekistan-flag.jpg'),
-                child: Text('uz',),
+                backgroundImage:
+                    AssetImage('assets/images/uzbekistan-flag.jpg'),
+                child: Text(
+                  'uz',
+                ),
               )),
           const NavigationRailDestination(
               icon: SizedBox(),
               label: CircleAvatar(
                 foregroundColor: Colors.pink,
                 maxRadius: 15,
-                backgroundImage: AssetImage('assets/images/russian-flag.png',),
+                backgroundImage: AssetImage(
+                  'assets/images/russian-flag.png',
+                ),
                 child: Text('ru'),
               ))
         ],
         selectedIndex: state.navIndex,
         onDestinationSelected: (int index) {
-
+          if (index != 6 && index != 7)
+            BlocProvider.of<CounterDartCubit>(context).setNavRailIndex(index);
           switch (index) {
-            case 0:{
-              BlocProvider.of<DummyMealsCubit>(context).changeLanguage(context);
-              Navigator.of(context).pushNamed(MyHomePage.routeArgs);}
+            case 0:
+              {
+                BlocProvider.of<DummyMealsCubit>(context)
+                    .changeLanguage(context);
+                Navigator.of(context).pushNamed(MyHomePage.routeArgs);
+              }
               break;
             case 1:
               {
-                BlocProvider.of<DummyMealsCubit>(context).changeLanguage(context);
+                BlocProvider.of<DummyMealsCubit>(context)
+                    .changeLanguage(context);
                 Navigator.of(context).pushNamed(CartScreen.routeArgs);
-
               }
               break;
             case 2:
               {
-
+                BlocProvider.of<DummyMealsCubit>(context)
+                    .changeLanguage(context);
+                Navigator.of(context).pushNamed(MyHomePage.routeArgs);
               }
               break;
             case 3:
               {
-                BlocProvider.of<DummyMealsCubit>(context).changeLanguage(context);
+                BlocProvider.of<DummyMealsCubit>(context)
+                    .changeLanguage(context);
                 Navigator.of(context).pushNamed(MyHomePage.routeArgs);
-
               }
               ;
               break;
             case 4:
               {
-
+                BlocProvider.of<DummyMealsCubit>(context)
+                    .changeLanguage(context);
+                Navigator.of(context).pushNamed(MyHomePage.routeArgs);
               }
               break;
             case 5:
               {
-                BlocProvider.of<DummyMealsCubit>(context).changeLanguage(context);
+                BlocProvider.of<DummyMealsCubit>(context)
+                    .changeLanguage(context);
                 Navigator.of(context).pushNamed(MyHomePage.routeArgs);
-
               }
               break;
             case 6:
               {
                 context.setLocale(Locale('uz', 'UZ'));
                 BlocProvider.of<CounterDartCubit>(context).setLang(1);
-                BlocProvider.of<DummyMealsCubit>(context).changeLanguage(context);
+                BlocProvider.of<DummyMealsCubit>(context)
+                    .changeLanguage(context);
               }
               break;
             case 7:
               {
                 context.setLocale(Locale('ru', 'RU'));
                 BlocProvider.of<CounterDartCubit>(context).setLang(2);
-                BlocProvider.of<DummyMealsCubit>(context).changeLanguage(context);
+                BlocProvider.of<DummyMealsCubit>(context)
+                    .changeLanguage(context);
               }
               break;
             //
           }
-          if(index!=6&&index!=7) BlocProvider.of<CounterDartCubit>(context).setNavRailIndex(index);
-
         },
       );
     });

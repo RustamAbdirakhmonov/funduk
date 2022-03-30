@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -193,7 +194,7 @@ class _CartItemState extends State<CartItem> {
             backgroundColor: Colors.white.withOpacity(0),
             foregroundColor: Colors.red,
             icon: Icons.delete,
-            label: 'Delete',
+            label: "delete".tr(),
           ),
         ],
       ),

@@ -5,22 +5,22 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:funduk_app/bussines_logic/cubits/cart_dart_cubit.dart';
+import 'package:funduk_app/bussines_logic/cubits/dummy_meals_cubit.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 import '../../data/models/meal.dart';
 
 class YouTubeIframeItem extends StatefulWidget {
   static const routeArgs = '/youtube_items';
-  String video_id;
 
-  YouTubeIframeItem({Key? key, required this.video_id}) : super(key: key);
+  YouTubeIframeItem({Key? key}) : super(key: key);
 
   @override
   State<YouTubeIframeItem> createState() => _YouTubeIframeItemState();
 }
 
-class _YouTubeIframeItemState extends State<YouTubeIframeItem> with SingleTickerProviderStateMixin{
+class _YouTubeIframeItemState extends State<YouTubeIframeItem>
+    with SingleTickerProviderStateMixin {
   bool _setPosition = true;
   late YoutubePlayerController _controller;
   AnimationController? _animationController;
@@ -32,7 +32,8 @@ class _YouTubeIframeItemState extends State<YouTubeIframeItem> with SingleTicker
         AnimationController(vsync: this, duration: Duration(seconds: 20));
     _animationController!.repeat();
     _controller = YoutubePlayerController(
-      initialVideoId: widget.video_id,
+      initialVideoId:
+          BlocProvider.of<DummyMealsCubit>(context).refreshItem().videoId,
     );
     _controller.onEnterFullscreen = () {
       SystemChrome.setPreferredOrientations([
@@ -47,7 +48,7 @@ class _YouTubeIframeItemState extends State<YouTubeIframeItem> with SingleTicker
   Widget build(BuildContext context) {
     const player = YoutubePlayerIFrame();
 
-    Meal meal = BlocProvider.of<CartDartCubit>(context).getMeal();
+    Meal meal = BlocProvider.of<DummyMealsCubit>(context).refreshItem();
 
     return YoutubePlayerControllerProvider(
       // Passing controller to widgets below.
@@ -217,15 +218,17 @@ class _YouTubeIframeItemState extends State<YouTubeIframeItem> with SingleTicker
                     )),
                 AnimatedBuilder(
                   animation: _animationController!.view,
-                  builder: (context,child){
-                    return Transform.rotate(angle: _animationController!.value*2*pi,child: child,);
+                  builder: (context, child) {
+                    return Transform.rotate(
+                      angle: _animationController!.value * 2 * pi,
+                      child: child,
+                    );
                   },
-
                   child: GestureDetector(
-                    onLongPress: (){
+                    onLongPress: () {
                       _animationController?.stop();
                     },
-                    onTap: (){
+                    onTap: () {
                       _animationController?.reset();
                     },
                     child: Container(
@@ -233,8 +236,8 @@ class _YouTubeIframeItemState extends State<YouTubeIframeItem> with SingleTicker
                       height: MediaQuery.of(context).size.width,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(100),
-                          image:
-                              DecorationImage(image: AssetImage(meal.imageUrl))),
+                          image: DecorationImage(
+                              image: AssetImage(meal.imageUrl))),
                     ),
                   ),
                 )
