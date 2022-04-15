@@ -255,7 +255,7 @@ class _MealItemState extends State<MealItem> {
                               // BlocProvider.of<CounterDartCubit>(context).doNull();
                               BlocProvider.of<CounterDartCubit>(context)
                                   .state
-                                  .counter.toInt()!=0?_showMaterialDialogCheck():Container();
+                                  .counter==0?_showMaterialDialogCheck():Container();
                             },
                             child: Text(
                               "add_to_cart".tr(),

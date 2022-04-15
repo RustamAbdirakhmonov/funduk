@@ -71,10 +71,13 @@ class _MyHomePageState extends State<MyHomePage> {
                 width: width * 1,
                 child: GridView.builder(
                   scrollDirection: Axis.vertical,
+
                   padding: EdgeInsets.all(5),
                   gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+
                     maxCrossAxisExtent: height * .35,
                     childAspectRatio: 0.52,
+
                   ),
                   itemBuilder: (BuildContext context, int index) {
                     return MealItem(
